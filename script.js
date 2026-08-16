@@ -1,0 +1,15 @@
+window.addEventListener("load",()=>setTimeout(()=>document.querySelector(".loader").classList.add("hide"),900));
+const cursor=document.querySelector(".cursor"),dot=document.querySelector(".cursor-dot");
+window.addEventListener("pointermove",e=>{cursor.style.left=e.clientX+"px";cursor.style.top=e.clientY+"px";dot.style.left=e.clientX+"px";dot.style.top=e.clientY+"px"});
+document.querySelectorAll("a,button,.skill-card,.project").forEach(el=>{el.addEventListener("mouseenter",()=>{cursor.style.width="55px";cursor.style.height="55px";cursor.style.borderColor="#b8ff4a"});el.addEventListener("mouseleave",()=>{cursor.style.width="32px";cursor.style.height="32px";cursor.style.borderColor="#b8ff4a88"})});
+document.querySelectorAll(".magnetic").forEach(el=>el.addEventListener("mousemove",e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.12}px)`}));
+document.querySelectorAll(".magnetic").forEach(el=>el.addEventListener("mouseleave",()=>el.style.transform=""));
+document.querySelectorAll(".tilt").forEach(card=>card.addEventListener("mousemove",e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(700px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-7px)`}));
+document.querySelectorAll(".tilt").forEach(card=>card.addEventListener("mouseleave",()=>card.style.transform=""));
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");obs.unobserve(e.target)}}),{threshold:.2});
+document.querySelectorAll(".reveal-text").forEach(el=>obs.observe(el));
+const itemObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");e.target.style.opacity="1";e.target.style.transform="translateY(0)";itemObs.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".timeline-item,.project,.interest-cards div").forEach((el,i)=>{el.style.opacity="0";el.style.transform="translateY(35px)";el.style.transition=`opacity .7s ${i*.08}s,transform .7s ${i*.08}s,border-color .3s`;itemObs.observe(el)});
+const menu=document.querySelector(".menu-btn"),links=document.querySelector(".nav-links");
+menu?.addEventListener("click",()=>{const open=links.classList.toggle("open");links.style.display=open?"flex":"";if(open)Object.assign(links.style,{position:"absolute",top:"76px",right:"6vw",flexDirection:"column",padding:"20px",background:"#101218",border:"1px solid #292c35"})});
+links?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{links.classList.remove("open");if(innerWidth<901)links.style.display="none"}));
